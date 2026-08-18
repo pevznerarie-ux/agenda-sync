@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Réserver une visite de salle</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Visite de salle</h1>
+    <a class="home-link" href="index.html">← Accueil</a>
+  </header>
+  <main>
+    <div class="card" style="max-width:480px">
+      <form id="booking-form">
+        <div class="field">
+          <label>Nom du visiteur</label>
+          <input id="visitorName" required />
+        </div>
+        <div class="field">
+          <label>Motif / description</label>
+          <input id="purpose" placeholder="Visite de la salle de réception" />
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input id="date" type="date" required />
+        </div>
+        <div style="display:flex; gap:12px">
+          <div class="field" style="flex:1">
+            <label>Heure de début</label>
+            <input id="startTime" type="time" required />
+          </div>
+          <div class="field" style="flex:1">
+            <label>Heure de fin</label>
+            <input id="endTime" type="time" required />
+          </div>
+        </div>
+        <button type="submit" style="width:100%">Réserver</button>
+      </form>
+      <p id="booking-message" style="margin-top:12px"></p>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/room-booking.js"></script>
+</body>
+</html>

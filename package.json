@@ -1,0 +1,23 @@
+{
+  "name": "agenda-sync",
+  "version": "1.0.0",
+  "description": "Synchronisation des agendas Google des directeurs et interface d'accueil pour CNJ Events / l'ecole",
+  "private": true,
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "googleapis": "^140.0.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.14"
+  }
+}
