@@ -59,7 +59,10 @@ async function loadAgenda() {
 datePicker.addEventListener('change', loadAgenda);
 
 (async () => {
-  await ensureSession('dashboard');
+  const session = await ensureSession('director');
+  if (session.isAdmin) {
+    document.getElementById('admin-link').style.display = '';
+  }
   loadDirectorsStatus();
   loadAgenda();
   setInterval(loadAgenda, 30000);

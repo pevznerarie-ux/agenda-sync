@@ -2,9 +2,12 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const config = require('./config');
+const directors = require('./directors');
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
 const reminders = require('./reminders');
+
+directors.seedIfNeeded();
 
 const app = express();
 
@@ -19,7 +22,7 @@ app.use(session({
 // de connexion ni aucune autre donnee sensible : sert a afficher la page
 // d'accueil sans authentification prealable.
 app.get('/api/public/directors', (req, res) => {
-  res.json(config.directors.map((d) => ({ id: d.id, name: d.name, role: d.role })));
+  res.json(directors.publicList());
 });
 
 app.use('/auth', authRoutes.router);
@@ -28,8 +31,8 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.listen(config.port, () => {
   console.log(`agenda-sync demarre sur ${config.baseUrl}`);
-  if (config.directors.length < 3) {
-    console.warn('Moins de 3 directeurs configures dans .env (DIRECTOR_1_*, DIRECTOR_2_*, DIRECTOR_3_*...).');
+  if (directors.list().length === 0) {
+    console.warn('Aucun profil configure. Ajoutez DIRECTOR_1_* dans .env avant le tout premier demarrage, ou utilisez /admin.html.');
   }
   reminders.start();
 });

@@ -8,13 +8,17 @@ function director(index) {
     name: process.env[`DIRECTOR_${index}_NAME`] || id,
     role: process.env[`DIRECTOR_${index}_ROLE`] || '',
     email: process.env[`DIRECTOR_${index}_EMAIL`] || '',
+    pin: process.env[`DIRECTOR_${index}_PIN`] || '',
+    isAdmin: String(process.env[`DIRECTOR_${index}_ADMIN`] || '').toLowerCase() === 'true',
   };
 }
 
 // Jusqu'a 20 profils (DIRECTOR_1_* ... DIRECTOR_20_*) : ecole primaire, college/
-// lycee, direction generale, intendance... on peut en ajouter sans toucher au code.
+// lycee, direction generale, intendance... Ne sert qu'a amorcer la liste au
+// tout premier demarrage (voir server/directors.js) ; ensuite la liste reelle
+// vit dans data/db.json et se gere depuis /admin.html.
 const MAX_DIRECTORS = 20;
-const directors = Array.from({ length: MAX_DIRECTORS }, (_, i) => director(i + 1)).filter(Boolean);
+const envDirectors = Array.from({ length: MAX_DIRECTORS }, (_, i) => director(i + 1)).filter(Boolean);
 
 module.exports = {
   port: Number(process.env.PORT || 3000),
@@ -31,16 +35,15 @@ module.exports = {
     ],
   },
 
-  directors,
+  envDirectors,
 
   room: {
     calendarId: process.env.ROOM_CALENDAR_ID || '',
     name: process.env.ROOM_CALENDAR_NAME || 'Salle de visite',
-    ownerDirectorId: process.env.ROOM_OWNER_DIRECTOR_ID || (directors[0] && directors[0].id),
+    ownerDirectorId: process.env.ROOM_OWNER_DIRECTOR_ID || (envDirectors[0] && envDirectors[0].id),
   },
 
   gatekeeperPin: process.env.GATEKEEPER_PIN || '1234',
-  dashboardPassword: process.env.DASHBOARD_PASSWORD || 'changeme',
 
   smtp: {
     host: process.env.SMTP_HOST || '',

@@ -2,6 +2,7 @@ const { google } = require('googleapis');
 const config = require('./config');
 const db = require('./db');
 const googleAuth = require('./googleAuth');
+const directors = require('./directors');
 
 function dayRange(dateStr) {
   const base = dateStr ? new Date(`${dateStr}T00:00:00`) : new Date();
@@ -122,7 +123,7 @@ function withLocalStatus(event) {
 // chaque rendez-vous.
 async function getMergedAgenda(dateStr) {
   const [directorResults, roomResult] = await Promise.all([
-    Promise.all(config.directors.map((d) => fetchDirectorEvents(d, dateStr))),
+    Promise.all(directors.list().map((d) => fetchDirectorEvents(d, dateStr))),
     fetchRoomEvents(dateStr),
   ]);
 

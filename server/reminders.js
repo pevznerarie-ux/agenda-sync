@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const config = require('./config');
 const db = require('./db');
+const directors = require('./directors');
 const { getMergedAgenda } = require('./calendar');
 
 let transporter = null;
@@ -53,7 +54,7 @@ async function tick() {
 
     for (const event of events) {
       if (event.kind !== 'appointment') continue;
-      const director = config.directors.find((d) => d.id === event.directorId);
+      const director = directors.findById(event.directorId);
       if (!director || !director.email) continue;
 
       const minutesUntilStart = new Date(event.start) - now;

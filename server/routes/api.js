@@ -3,7 +3,8 @@ const config = require('../config');
 const db = require('../db');
 const googleAuth = require('../googleAuth');
 const calendarSvc = require('../calendar');
-const { requireAuth } = require('./auth');
+const directors = require('../directors');
+const { requireAuth, requireAdmin } = require('./auth');
 
 const router = express.Router();
 router.use(requireAuth);
@@ -58,11 +59,57 @@ router.post('/room-booking', async (req, res) => {
       endIso,
       purpose,
       visitorName,
-      requestedBy: req.session.role,
+      requestedBy: req.session.directorId || req.session.role,
     });
     res.json({ ok: true, event });
   } catch (err) {
     res.status(err.code === 'CONFLICT' ? 409 : 500).json({ error: err.message });
+  }
+});
+
+// --- Administration des profils (reservee a l'admin: session.isAdmin) ---
+
+router.get('/admin/directors', requireAdmin, (req, res) => {
+  const tokens = db.load().tokens;
+  res.json({
+    directors: directors.list().map((d) => ({
+      id: d.id,
+      name: d.name,
+      role: d.role,
+      email: d.email,
+      isAdmin: d.isAdmin,
+      googleConnected: Boolean(tokens[d.id]),
+    })),
+  });
+});
+
+router.post('/admin/directors', requireAdmin, (req, res) => {
+  try {
+    directors.add(req.body || {});
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.delete('/admin/directors/:id', requireAdmin, (req, res) => {
+  if (req.params.id === req.session.directorId) {
+    return res.status(400).json({ error: 'Vous ne pouvez pas supprimer votre propre compte.' });
+  }
+  try {
+    directors.remove(req.params.id);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+router.post('/admin/directors/:id/reset-pin', requireAdmin, (req, res) => {
+  try {
+    directors.resetPin(req.params.id, (req.body || {}).pin);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 

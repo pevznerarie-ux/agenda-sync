@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administration — Agendas synchronisés</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Administration des profils</h1>
+    <a class="home-link" href="dashboard.html">← Tableau de bord</a>
+  </header>
+  <main>
+    <div id="admin-denied" class="card" style="display:none">
+      <p>Cette page est réservée à l'administrateur.</p>
+    </div>
+
+    <div id="admin-content" style="display:none">
+      <div class="card">
+        <h2 style="margin-top:0">Profils existants</h2>
+        <table>
+          <thead>
+            <tr><th>Nom</th><th>Rôle</th><th>Google</th><th>Admin</th><th></th></tr>
+          </thead>
+          <tbody id="directors-body"></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="max-width:480px">
+        <h2 style="margin-top:0">Ajouter un profil</h2>
+        <form id="add-form">
+          <div class="field">
+            <label>Nom affiché</label>
+            <input id="add-name" required />
+          </div>
+          <div class="field">
+            <label>Identifiant technique (utilisé dans l'URL, sans espace/accent)</label>
+            <input id="add-id" pattern="[a-z0-9-]+" placeholder="ex: dupont" required />
+          </div>
+          <div class="field">
+            <label>Rôle affiché (optionnel)</label>
+            <input id="add-role" placeholder="ex: Directeur du Primaire" />
+          </div>
+          <div class="field">
+            <label>Email (pour les rappels, optionnel)</label>
+            <input id="add-email" type="email" />
+          </div>
+          <div class="field">
+            <label>Code PIN (4 caractères minimum)</label>
+            <input id="add-pin" required minlength="4" />
+          </div>
+          <div class="field">
+            <label><input type="checkbox" id="add-admin" style="width:auto" /> Administrateur (peut gérer les profils)</label>
+          </div>
+          <button type="submit" style="width:100%">Ajouter</button>
+        </form>
+        <p id="add-message" style="margin-top:12px"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

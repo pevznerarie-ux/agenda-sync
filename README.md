@@ -25,6 +25,10 @@ ajouter ou en retirer sans toucher au code.
   natifs de Google Calendar (popup/email configurés directement dans
   Google Agenda par chaque directeur) continuent de fonctionner en plus,
   sans rien à coder.
+- **Connexion individuelle** : chaque profil a son propre code PIN
+  (haché, jamais stocké en clair). Un profil marqué administrateur peut
+  ajouter, supprimer ou réinitialiser le code d'un autre profil depuis
+  `/admin.html`, sans toucher au code ni redéployer.
 
 ## Architecture
 
@@ -56,12 +60,18 @@ data/      stockage JSON local (créé automatiquement, ignoré par git)
 4. Copiez `.env.example` en `.env` et renseignez `GOOGLE_CLIENT_ID` et
    `GOOGLE_CLIENT_SECRET`.
 
-### 2. Configurer les profils de la direction
+### 2. Configurer les profils de la direction (premier démarrage uniquement)
 
 Dans `.env`, un bloc `DIRECTOR_N_*` par personne (`DIRECTOR_1_*`,
 `DIRECTOR_2_*`, ...) : identifiant technique, nom affiché, rôle, email pour
-les rappels. Les valeurs par défaut du fichier correspondent aux 5 profils
-actuels ; ajoutez `DIRECTOR_6_*`, etc. pour en configurer d'autres.
+les rappels, et un `_PIN` (code personnel de connexion). Marquez
+`DIRECTOR_N_ADMIN=true` sur le profil qui doit pouvoir gérer les autres
+comptes (Rav Arie par défaut).
+
+⚠️ Ces variables ne servent qu'à **amorcer** la liste au tout premier
+démarrage (quand `data/db.json` n'existe pas encore). Une fois l'app
+lancée une première fois, la liste réelle vit dans `data/db.json` et se
+gère depuis `/admin.html` — modifier `.env` ensuite n'a plus d'effet.
 
 ### 3. (Optionnel) Calendrier de la salle de visite
 
@@ -84,8 +94,11 @@ de passe du compte.
 
 ### 5. Codes d'accès internes
 
-`GATEKEEPER_PIN` (poste d'accueil) et `DASHBOARD_PASSWORD` (tableau de
-bord directeurs) : changez les valeurs par défaut avant tout déploiement.
+`GATEKEEPER_PIN` est un code partagé pour le poste d'accueil (le gardien
+n'a pas de compte personnel). Chaque membre de la direction a son propre
+code (`DIRECTOR_N_PIN`) — changez tous ces codes par défaut avant tout
+déploiement, et redemandez à l'admin (Rav Arie) de les réinitialiser
+depuis `/admin.html` si besoin après coup.
 
 ### 6. Lancer
 

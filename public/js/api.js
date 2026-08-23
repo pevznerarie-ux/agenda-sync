@@ -1,5 +1,5 @@
 // Petites aides partagees par les pages: appel API avec gestion de session,
-// et modale de connexion (PIN accueil ou mot de passe directeur).
+// et modale de connexion (PIN accueil, ou profil personnel + code).
 
 async function apiFetch(url, options = {}) {
   const res = await fetch(url, {
@@ -17,7 +17,9 @@ async function apiFetch(url, options = {}) {
   return res.status === 204 ? null : res.json();
 }
 
-function showLoginModal(defaultRole) {
+async function showLoginModal(defaultMode) {
+  const directors = await fetch('/api/public/directors').then((r) => r.json()).catch(() => []);
+
   return new Promise((resolve) => {
     const backdrop = document.createElement('div');
     backdrop.className = 'modal-backdrop';
@@ -26,13 +28,19 @@ function showLoginModal(defaultRole) {
         <h2>Connexion requise</h2>
         <div class="field">
           <label>Profil</label>
-          <select id="login-role">
-            <option value="gatekeeper" ${defaultRole === 'gatekeeper' ? 'selected' : ''}>Accueil / gardien (code PIN)</option>
-            <option value="dashboard" ${defaultRole === 'dashboard' ? 'selected' : ''}>Directeur (mot de passe)</option>
+          <select id="login-mode">
+            <option value="gatekeeper" ${defaultMode === 'gatekeeper' ? 'selected' : ''}>Accueil / gardien</option>
+            <option value="director" ${defaultMode !== 'gatekeeper' ? 'selected' : ''}>Membre de la direction</option>
+          </select>
+        </div>
+        <div class="field" id="login-director-field">
+          <label>Qui êtes-vous ?</label>
+          <select id="login-director">
+            ${directors.map((d) => `<option value="${d.id}">${d.name}</option>`).join('')}
           </select>
         </div>
         <div class="field">
-          <label>Code</label>
+          <label>Code PIN</label>
           <input id="login-secret" type="password" autofocus />
         </div>
         <div class="error" id="login-error"></div>
@@ -40,15 +48,24 @@ function showLoginModal(defaultRole) {
       </div>`;
     document.body.appendChild(backdrop);
 
+    const modeSelect = backdrop.querySelector('#login-mode');
+    const directorField = backdrop.querySelector('#login-director-field');
+    const syncDirectorField = () => {
+      directorField.style.display = modeSelect.value === 'director' ? '' : 'none';
+    };
+    modeSelect.addEventListener('change', syncDirectorField);
+    syncDirectorField();
+
     const submit = async () => {
-      const role = backdrop.querySelector('#login-role').value;
+      const mode = modeSelect.value;
+      const directorId = backdrop.querySelector('#login-director').value;
       const secret = backdrop.querySelector('#login-secret').value;
       const errorEl = backdrop.querySelector('#login-error');
       try {
         const res = await fetch('/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ role, secret }),
+          body: JSON.stringify({ mode, directorId, secret }),
         });
         if (!res.ok) throw new Error('Code incorrect.');
         document.body.removeChild(backdrop);
@@ -66,11 +83,11 @@ function showLoginModal(defaultRole) {
 }
 
 let sessionPromise = null;
-function ensureSession(defaultRole) {
+function ensureSession(defaultMode) {
   if (!sessionPromise) {
     sessionPromise = fetch('/auth/session')
       .then((r) => r.json())
-      .then((data) => (data.role ? data : showLoginModal(defaultRole)))
+      .then((data) => (data.role ? data : showLoginModal(defaultMode)))
       .finally(() => { sessionPromise = null; });
   }
   return sessionPromise;

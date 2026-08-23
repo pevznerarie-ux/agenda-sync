@@ -1,9 +1,10 @@
 const { google } = require('googleapis');
 const config = require('./config');
 const db = require('./db');
+const directors = require('./directors');
 
 function isKnownDirector(directorId) {
-  return config.directors.some((d) => d.id === directorId);
+  return Boolean(directors.findById(directorId));
 }
 
 function newOAuthClient() {
@@ -61,7 +62,7 @@ function getAuthorizedClient(directorId) {
 
 function connectionStatus() {
   const data = db.load();
-  return config.directors.map((d) => ({
+  return directors.list().map((d) => ({
     id: d.id,
     name: d.name,
     connected: Boolean(data.tokens[d.id]),
