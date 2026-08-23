@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tableau de bord — Agendas synchronisés</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Tableau de bord directeurs</h1>
+    <a class="home-link" href="index.html">← Accueil</a>
+  </header>
+  <main>
+    <div class="card">
+      <h2 style="margin-top:0">Connexion des comptes Google</h2>
+      <div id="directors-status">Chargement…</div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <h2 style="margin:0">Agenda du jour</h2>
+        <input type="date" id="date-picker" style="width:auto" />
+      </div>
+      <table style="margin-top:12px">
+        <thead>
+          <tr><th>Heure</th><th>Qui</th><th>Rendez-vous</th><th>Visiteur</th><th>Statut</th></tr>
+        </thead>
+        <tbody id="agenda-body"></tbody>
+      </table>
+      <div id="agenda-empty" class="empty-state" style="display:none">Aucun rendez-vous ce jour-là.</div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

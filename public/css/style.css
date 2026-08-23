@@ -1,0 +1,159 @@
+:root {
+  --bg: #f4f6f9;
+  --panel: #ffffff;
+  --text: #1c2530;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --green: #16a34a;
+  --amber: #d97706;
+  --red: #dc2626;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header.app-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header.app-header h1 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+header.app-header a.home-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.hub-links {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 24px;
+}
+
+.hub-links a {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.hub-links a:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.hub-links .emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+.hub-links h2 { margin: 0 0 6px; font-size: 1.05rem; }
+.hub-links p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+button, .btn {
+  font: inherit;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+}
+
+button:hover { background: var(--primary-dark); }
+button.secondary { background: #eef2f7; color: var(--text); }
+button.secondary:hover { background: #e2e8f0; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+input, select {
+  font: inherit;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%;
+}
+
+label { font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 4px; }
+.field { margin-bottom: 14px; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.badge.upcoming { background: #e0e7ff; color: #3730a3; }
+.badge.in_progress { background: #dbeafe; color: var(--primary-dark); }
+.badge.done { background: #f1f5f9; color: var(--muted); }
+.badge.arrived { background: #dcfce7; color: #166534; }
+.badge.late { background: #fef3c7; color: #92400e; }
+.badge.room { background: #fae8ff; color: #86198f; }
+
+/* --- Modal de connexion --- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+}
+.modal { background: white; border-radius: var(--radius); padding: 28px; width: 320px; }
+.modal h2 { margin-top: 0; font-size: 1.05rem; }
+.modal .error { color: var(--red); font-size: 0.85rem; min-height: 1.2em; }
+
+/* --- Poste d'accueil (tablette) --- */
+.gatekeeper main { max-width: 780px; }
+.visit-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.visit-card.arrived { border-color: var(--green); background: #f0fdf4; }
+.visit-card.late { border-left: 6px solid var(--amber); }
+.visit-time { font-size: 1.4rem; font-weight: 700; width: 90px; flex-shrink: 0; }
+.visit-info { flex: 1; }
+.visit-info .visitor { font-size: 1.15rem; font-weight: 600; }
+.visit-info .meta { color: var(--muted); font-size: 0.9rem; }
+.visit-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.visit-actions button { font-size: 1rem; padding: 12px 18px; }
+
+.empty-state { text-align: center; color: var(--muted); padding: 40px 0; }
