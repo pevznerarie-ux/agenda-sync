@@ -11,6 +11,12 @@ function initials(name) {
 async function renderDirectors() {
   const grid = document.getElementById('directors-grid');
   try {
+    const { needsSetup } = await fetch('/api/public/setup-status').then((r) => r.json());
+    if (needsSetup) {
+      window.location.href = 'setup.html';
+      return;
+    }
+
     const res = await fetch('/api/public/directors');
     const directors = await res.json();
 

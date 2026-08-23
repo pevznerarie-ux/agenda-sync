@@ -85,9 +85,17 @@ async function showLoginModal(defaultMode) {
 let sessionPromise = null;
 function ensureSession(defaultMode) {
   if (!sessionPromise) {
-    sessionPromise = fetch('/auth/session')
+    sessionPromise = fetch('/api/public/setup-status')
       .then((r) => r.json())
-      .then((data) => (data.role ? data : showLoginModal(defaultMode)))
+      .then(({ needsSetup }) => {
+        if (needsSetup && !window.location.pathname.endsWith('setup.html')) {
+          window.location.href = 'setup.html';
+          return new Promise(() => {}); // la page quitte avant que ça compte
+        }
+        return fetch('/auth/session')
+          .then((r) => r.json())
+          .then((data) => (data.role ? data : showLoginModal(defaultMode)));
+      })
       .finally(() => { sessionPromise = null; });
   }
   return sessionPromise;

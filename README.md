@@ -60,18 +60,22 @@ data/      stockage JSON local (créé automatiquement, ignoré par git)
 4. Copiez `.env.example` en `.env` et renseignez `GOOGLE_CLIENT_ID` et
    `GOOGLE_CLIENT_SECRET`.
 
-### 2. Configurer les profils de la direction (premier démarrage uniquement)
+### 2. Configurer les profils de la direction
 
-Dans `.env`, un bloc `DIRECTOR_N_*` par personne (`DIRECTOR_1_*`,
-`DIRECTOR_2_*`, ...) : identifiant technique, nom affiché, rôle, email pour
-les rappels, et un `_PIN` (code personnel de connexion). Marquez
-`DIRECTOR_N_ADMIN=true` sur le profil qui doit pouvoir gérer les autres
-comptes (Rav Arie par défaut).
+**Le plus simple : l'assistant de démarrage.** Ouvrez l'application dans un
+navigateur — tant qu'aucun profil n'existe, elle redirige automatiquement
+vers `/setup.html`, qui propose les 5 profils par défaut (noms, rôles et
+codes PIN pré-remplis, modifiables). Un clic sur « Créer ces profils »
+suffit ; aucune variable d'environnement à toucher. Cette page se
+désactive d'elle-même dès qu'un profil existe (elle ne peut pas être
+réutilisée pour en recréer d'autres).
 
-⚠️ Ces variables ne servent qu'à **amorcer** la liste au tout premier
-démarrage (quand `data/db.json` n'existe pas encore). Une fois l'app
-lancée une première fois, la liste réelle vit dans `data/db.json` et se
-gère depuis `/admin.html` — modifier `.env` ensuite n'a plus d'effet.
+**Alternative pour un déploiement scripté :** un bloc `DIRECTOR_N_*` par
+personne dans `.env` (identifiant technique, nom, rôle, email, `_PIN`, et
+`DIRECTOR_N_ADMIN=true` pour l'administrateur) amorce la liste au tout
+premier démarrage — mais seulement si `/setup.html` n'a pas déjà été
+utilisé. Après ce premier démarrage, `.env` n'a plus d'effet : tout se
+gère depuis `/admin.html`.
 
 ### 3. (Optionnel) Calendrier de la salle de visite
 
@@ -133,6 +137,11 @@ requis pour cette étape (l'authentification se fait auprès de Google).
 
 ## Limites connues / pistes d'amélioration
 
+- `/setup.html` et son API ne demandent aucune authentification tant
+  qu'aucun profil n'existe (c'est le but : personne ne peut encore se
+  connecter). Configurez vos profils juste après le tout premier
+  déploiement, avant de partager l'adresse — la page se désactive d'elle-
+  même dès qu'un profil existe.
 - Les tokens Google sont stockés **en clair** dans `data/db.json` pour
   simplifier ce premier MVP. Avant d'y faire transiter des données sur de
   vrais visiteurs/élèves, chiffrer ce fichier au repos ou migrer vers un

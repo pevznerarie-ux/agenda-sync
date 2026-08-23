@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Configuration initiale — Agendas synchronisés</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="img/logo-sinai.png" alt="Les Institutions Sinaï" />
+      <h1>Configuration initiale</h1>
+    </div>
+  </header>
+  <main>
+    <div id="already-done" class="card" style="display:none">
+      <p>Les profils sont déjà configurés. Rendez-vous sur le <a href="dashboard.html">tableau de bord</a>.</p>
+    </div>
+
+    <div id="setup-content">
+      <div class="card">
+        <p>
+          Aucun profil n'existe encore. Vérifiez les codes PIN ci-dessous (vous
+          pouvez les changer), puis cliquez sur « Créer ces profils ». Rav Arie
+          sera administrateur : il pourra ensuite ajouter, supprimer ou
+          réinitialiser les codes des autres depuis <code>/admin.html</code>.
+        </p>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Nom</th><th>Rôle</th><th>Code PIN</th></tr>
+          </thead>
+          <tbody id="setup-rows"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <button id="setup-submit" style="width:100%">Créer ces profils</button>
+        <p id="setup-message" style="margin-top:12px"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/setup.js"></script>
+</body>
+</html>

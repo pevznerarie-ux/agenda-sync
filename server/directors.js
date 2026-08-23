@@ -34,6 +34,44 @@ function list() {
   return db.load().directors || [];
 }
 
+// Vrai tant qu'aucun profil n'existe: l'app n'est pas encore utilisable (meme
+// pas pour un admin) et propose alors l'assistant de demarrage (/setup.html)
+// au lieu d'une interface de connexion vide.
+function needsSetup() {
+  return list().length === 0;
+}
+
+// Cree tous les profils d'un coup, uniquement tant qu'aucun n'existe encore
+// (assistant de premier demarrage, sans authentification requise puisqu'il
+// n'y a justement personne pour s'authentifier). Se desactive de lui-meme
+// des qu'un profil existe.
+function bulkCreate(entries) {
+  if (!needsSetup()) throw new Error('Des profils existent deja.');
+  if (!Array.isArray(entries) || entries.length === 0) throw new Error('Aucun profil a creer.');
+
+  const seenIds = new Set();
+  const now = new Date().toISOString();
+  const created = entries.map((e) => {
+    const id = (e.id || '').trim();
+    if (!id || !ID_PATTERN.test(id)) throw new Error(`Identifiant invalide: "${id}".`);
+    if (seenIds.has(id)) throw new Error(`Identifiant en double: "${id}".`);
+    seenIds.add(id);
+    if (!e.name) throw new Error(`Nom requis pour "${id}".`);
+    if (!e.pin || String(e.pin).length < 4) throw new Error(`Code PIN d'au moins 4 caracteres requis pour ${e.name}.`);
+    return {
+      id,
+      name: e.name,
+      role: e.role || '',
+      email: e.email || '',
+      isAdmin: Boolean(e.isAdmin),
+      pinHash: hashPin(e.pin),
+      createdAt: now,
+    };
+  });
+
+  db.update((data) => { data.directors = created; });
+}
+
 function publicList() {
   return list().map(({ id, name, role }) => ({ id, name, role }));
 }
@@ -89,6 +127,8 @@ function verifyDirectorPin(id, pin) {
 
 module.exports = {
   seedIfNeeded,
+  needsSetup,
+  bulkCreate,
   list,
   publicList,
   findById,
