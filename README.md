@@ -1,16 +1,20 @@
 # Agenda Sync — CNJ
 
-Système reliant les agendas Google du directeur du primaire, du directeur du
-collège/lycée et de Harry Pesner, avec un poste d'accueil pour le gardien
-(check-in des visiteurs, retards) et une réservation de créneaux pour les
-visites de la salle de réception.
+Système reliant les agendas Google de la direction — Yohan Atlan (Primaire),
+Simha Nemni (Collège/Lycée), Moché Cohen (Intendance), la Surveillance du
+Collège/Lycée et Rav Arie (Direction générale) — avec un poste d'accueil
+pour le gardien (check-in des visiteurs, retards) et une réservation de
+créneaux pour les visites de la salle de réception. La liste des profils
+est configurable dans `.env` (`DIRECTOR_1_*` à `DIRECTOR_N_*`) : on peut en
+ajouter ou en retirer sans toucher au code.
 
 ## Fonctionnalités
 
-- **Connexion Google Calendar** de chacun des 3 comptes (OAuth2, lecture des
-  rendez-vous du jour sur le calendrier principal de chacun).
-- **Tableau de bord** (`/dashboard.html`) : agenda fusionné des trois
-  directeurs pour une date donnée, statut de connexion de chaque compte.
+- **Connexion Google Calendar** de chaque profil (OAuth2, lecture des
+  rendez-vous du jour sur le calendrier principal de chacun), directement
+  depuis sa carte sur la page d'accueil.
+- **Tableau de bord** (`/dashboard.html`) : agenda fusionné de toute la
+  direction pour une date donnée, statut de connexion de chaque compte.
 - **Poste d'accueil** (`/gatekeeper.html`) : vue tablette, gros boutons,
   liste des rendez-vous du jour triés par heure, avec "Faire entrer" et
   "En retard" pour chaque visiteur.
@@ -52,10 +56,12 @@ data/      stockage JSON local (créé automatiquement, ignoré par git)
 4. Copiez `.env.example` en `.env` et renseignez `GOOGLE_CLIENT_ID` et
    `GOOGLE_CLIENT_SECRET`.
 
-### 2. Configurer les trois personnes
+### 2. Configurer les profils de la direction
 
-Dans `.env`, `DIRECTOR_1_*`, `DIRECTOR_2_*`, `DIRECTOR_3_*` : identifiant
-technique, nom affiché, email pour les rappels.
+Dans `.env`, un bloc `DIRECTOR_N_*` par personne (`DIRECTOR_1_*`,
+`DIRECTOR_2_*`, ...) : identifiant technique, nom affiché, rôle, email pour
+les rappels. Les valeurs par défaut du fichier correspondent aux 5 profils
+actuels ; ajoutez `DIRECTOR_6_*`, etc. pour en configurer d'autres.
 
 ### 3. (Optionnel) Calendrier de la salle de visite
 
@@ -89,9 +95,9 @@ npm install
 npm run dev      # ou: npm start
 ```
 
-Ouvrez `http://localhost:3000`. Chaque directeur connecte son compte
-Google depuis le tableau de bord (mot de passe `DASHBOARD_PASSWORD`
-requis), puis clique "Connecter le compte Google" à côté de son nom.
+Ouvrez `http://localhost:3000`. Chaque personne connecte son compte Google
+directement depuis sa carte sur la page d'accueil, sans mot de passe
+requis pour cette étape (l'authentification se fait auprès de Google).
 
 ## Déploiement
 
