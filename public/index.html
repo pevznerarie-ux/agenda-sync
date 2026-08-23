@@ -3,39 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agendas synchronisés — Accueil</title>
+  <title>Agendas synchronisés</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <header class="app-header">
+<body class="home">
+  <section class="hero">
     <h1>Agendas synchronisés</h1>
-  </header>
-  <main>
-    <div class="card">
-      <p>
-        Ce système relie les agendas Google du directeur du primaire, du directeur du
-        collège/lycée et de Harry Pesner, pour que l'accueil sache en temps réel qui
-        attend qui — et à quelle heure.
-      </p>
-    </div>
+    <p>
+      Les agendas Google de la direction sont reliés entre eux et avec l'accueil :
+      chaque rendez-vous est visible en temps réel, et l'accueil sait toujours
+      qui attend qui, à quelle heure — avec une alerte en cas de retard.
+    </p>
+  </section>
 
-    <div class="hub-links">
-      <a href="dashboard.html">
-        <span class="emoji">🗓️</span>
-        <h2>Tableau de bord directeurs</h2>
-        <p>Connecter son compte Google et voir l'agenda fusionné des trois directeurs.</p>
-      </a>
-      <a href="gatekeeper.html">
-        <span class="emoji">🛎️</span>
-        <h2>Poste d'accueil</h2>
-        <p>Vue tablette pour l'accueil: faire entrer un visiteur, signaler un retard.</p>
-      </a>
-      <a href="room-booking.html">
-        <span class="emoji">🚪</span>
-        <h2>Visite de salle</h2>
-        <p>Réserver un créneau pour une visite de la salle de réception.</p>
-      </a>
-    </div>
+  <main>
+    <section>
+      <h2 class="section-title">Direction</h2>
+      <div id="directors-grid" class="portal-grid">
+        <div class="portal-card skeleton"></div>
+        <div class="portal-card skeleton"></div>
+        <div class="portal-card skeleton"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Accueil</h2>
+      <div class="portal-grid">
+        <a class="portal-card gatekeeper-card" href="gatekeeper.html">
+          <div class="avatar">🛎️</div>
+          <div class="portal-name">Poste d'accueil</div>
+          <div class="portal-role">Gardien</div>
+          <p class="portal-desc">
+            Les rendez-vous du jour, en un coup d'œil : faire entrer un visiteur,
+            signaler un retard.
+          </p>
+          <span class="btn">Ouvrir le poste d'accueil</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="footer-link">
+      <a href="room-booking.html">Réserver une visite de la salle de réception →</a>
+    </p>
   </main>
+
+  <script src="js/home.js"></script>
 </body>
 </html>

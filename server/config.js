@@ -6,11 +6,15 @@ function director(index) {
   return {
     id,
     name: process.env[`DIRECTOR_${index}_NAME`] || id,
+    role: process.env[`DIRECTOR_${index}_ROLE`] || '',
     email: process.env[`DIRECTOR_${index}_EMAIL`] || '',
   };
 }
 
-const directors = [director(1), director(2), director(3)].filter(Boolean);
+// Jusqu'a 20 profils (DIRECTOR_1_* ... DIRECTOR_20_*) : ecole primaire, college/
+// lycee, direction generale, intendance... on peut en ajouter sans toucher au code.
+const MAX_DIRECTORS = 20;
+const directors = Array.from({ length: MAX_DIRECTORS }, (_, i) => director(i + 1)).filter(Boolean);
 
 module.exports = {
   port: Number(process.env.PORT || 3000),

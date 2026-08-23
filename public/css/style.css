@@ -157,3 +157,96 @@ th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: u
 .visit-actions button { font-size: 1rem; padding: 12px 18px; }
 
 .empty-state { text-align: center; color: var(--muted); padding: 40px 0; }
+
+/* --- Page d'accueil --- */
+body.home {
+  background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 320px);
+}
+
+.hero {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 24px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 2rem;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+.hero p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+body.home main {
+  max-width: 880px;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 32px 0 14px;
+}
+
+.portal-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.portal-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.portal-card.skeleton { min-height: 180px; background: #eef1f5; border: none; }
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.portal-name { font-weight: 600; font-size: 1.05rem; }
+.portal-role { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+.portal-desc { color: var(--muted); font-size: 0.88rem; margin: 10px 0 16px; }
+
+.portal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  width: 100%;
+}
+.portal-actions .btn { flex: 1; }
+
+.portal-card .btn {
+  text-decoration: none;
+  display: inline-block;
+  margin-top: auto;
+}
+
+.gatekeeper-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.08); transform: translateY(-2px); transition: 0.15s; }
+
+.footer-link { text-align: center; margin: 32px 0; }
+.footer-link a { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+.footer-link a:hover { color: var(--primary); }
