@@ -10,8 +10,12 @@ const { hashPin, verifyPin } = require('./pinCrypto');
 const ID_PATTERN = /^[a-z0-9-]+$/;
 
 function seedIfNeeded() {
-  const data = db.load();
-  if (data.directors !== null) return; // deja amorce (meme si vide depuis)
+  // Se reamorce depuis .env tant que la liste est vide : une liste vide ne
+  // sert jamais a rien (meme l'admin ne pourrait plus se connecter), donc il
+  // n'existe pas de scenario legitime a preserver ici. Ca permet aussi de
+  // corriger un premier demarrage fait sans les DIRECTOR_N_* en ajoutant les
+  // variables puis en redemarrant, sans avoir a purger data/db.json a la main.
+  if (list().length > 0) return;
 
   db.update((d) => {
     d.directors = config.envDirectors.map((env) => ({

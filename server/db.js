@@ -9,9 +9,8 @@ const DB_FILE = path.join(__dirname, '..', 'data', 'db.json');
 
 const DEFAULT_DATA = {
   // liste des profils: { id, name, role, email, isAdmin, pinHash, createdAt }
-  // null = pas encore initialise (voir server/directors.js:seedIfNeeded), pour
-  // distinguer "jamais amorce" de "amorce puis tout supprime par l'admin".
-  directors: null,
+  // (voir server/directors.js:seedIfNeeded pour l'amorçage depuis .env)
+  directors: [],
   // directorId -> { refresh_token, connected_at, email_used }
   tokens: {},
   // eventId -> { status: 'checked_in' | 'late', visitorName, at, directorId }
