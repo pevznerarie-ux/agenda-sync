@@ -54,6 +54,7 @@ async function tick() {
 
     for (const event of events) {
       if (event.kind !== 'appointment') continue;
+      if (config.demoMode) continue; // jamais de vrai email pour un rendez-vous fictif
       const director = directors.findById(event.directorId);
       if (!director || !director.email) continue;
 

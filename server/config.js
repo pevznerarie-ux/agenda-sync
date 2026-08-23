@@ -45,6 +45,10 @@ module.exports = {
 
   gatekeeperPin: process.env.GATEKEEPER_PIN || '1234',
 
+  // Mode demonstration: remplace les vrais appels a Google Calendar par des
+  // rendez-vous fictifs, pour previsualiser l'interface sans compte connecte.
+  demoMode: String(process.env.DEMO_MODE || '').toLowerCase() === 'true',
+
   smtp: {
     host: process.env.SMTP_HOST || '',
     port: Number(process.env.SMTP_PORT || 465),

@@ -3,6 +3,7 @@ const config = require('./config');
 const db = require('./db');
 const googleAuth = require('./googleAuth');
 const directors = require('./directors');
+const demoData = require('./demoData');
 
 function dayRange(dateStr) {
   const base = dateStr ? new Date(`${dateStr}T00:00:00`) : new Date();
@@ -43,7 +44,11 @@ function normalizeEvent(event, director) {
   };
 }
 
-async function fetchDirectorEvents(director, dateStr) {
+async function fetchDirectorEvents(director, dateStr, directorIndex) {
+  if (config.demoMode) {
+    return { director, connected: true, events: demoData.eventsForDirector(director, directorIndex) };
+  }
+
   const client = googleAuth.getAuthorizedClient(director.id);
   if (!client) return { director, connected: false, events: [] };
 
@@ -64,6 +69,10 @@ async function fetchDirectorEvents(director, dateStr) {
 }
 
 async function fetchRoomEvents(dateStr) {
+  if (config.demoMode) {
+    return { connected: true, events: [demoData.roomEvent(config.room.name)] };
+  }
+
   if (!config.room.calendarId) return { connected: false, events: [] };
   const ownerClient = googleAuth.getAuthorizedClient(config.room.ownerDirectorId);
   if (!ownerClient) return { connected: false, events: [] };
@@ -123,7 +132,7 @@ function withLocalStatus(event) {
 // chaque rendez-vous.
 async function getMergedAgenda(dateStr) {
   const [directorResults, roomResult] = await Promise.all([
-    Promise.all(directors.list().map((d) => fetchDirectorEvents(d, dateStr))),
+    Promise.all(directors.list().map((d, i) => fetchDirectorEvents(d, dateStr, i))),
     fetchRoomEvents(dateStr),
   ]);
 

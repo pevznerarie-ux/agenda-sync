@@ -100,6 +100,15 @@ code (`DIRECTOR_N_PIN`) — changez tous ces codes par défaut avant tout
 déploiement, et redemandez à l'admin (Rav Arie) de les réinitialiser
 depuis `/admin.html` si besoin après coup.
 
+### Mode démo (prévisualiser sans compte Google)
+
+Pour voir le tableau de bord et le poste d'accueil peuplés de rendez-vous
+avant d'avoir connecté un seul compte Google, passez `DEMO_MODE=true` dans
+`.env`. Chaque profil affiche alors 2 rendez-vous fictifs répartis dans la
+journée, plus une visite de salle. Aucun email de rappel n'est jamais
+envoyé pour ces rendez-vous, même si SMTP est configuré. Remettre
+`DEMO_MODE=false` avant la mise en production.
+
 ### 6. Lancer
 
 ```bash
