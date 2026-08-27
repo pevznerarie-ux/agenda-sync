@@ -107,9 +107,11 @@ depuis `/admin.html` si besoin après coup.
 ### Déploiement Railway : erreur "service config ... not found"
 
 Si un déploiement échoue pendant `Initialization > Snapshot code` avec un
-message du type `service config at '/app/data' not found`, c'est un aléa
-ponctuel de la plateforme Railway (aucun volume n'est requis par cette
-app pour démarrer) — retentez simplement le déploiement.
+message du type `service config at '/app/data' not found`, vérifiez dans
+Settings → Build → Watch Paths qu'aucune entrée ne pointe vers un chemin
+absolu du conteneur (ex: `/app/data`) — Watch Paths attend des chemins du
+dépôt (ex: `agenda-sync/**`), pas des chemins d'exécution. Supprimez toute
+entrée de ce type, puis redéployez.
 
 ### Mode démo (prévisualiser sans compte Google)
 
