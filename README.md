@@ -104,6 +104,13 @@ code (`DIRECTOR_N_PIN`) — changez tous ces codes par défaut avant tout
 déploiement, et redemandez à l'admin (Rav Arie) de les réinitialiser
 depuis `/admin.html` si besoin après coup.
 
+### Déploiement Railway : erreur "service config ... not found"
+
+Si un déploiement échoue pendant `Initialization > Snapshot code` avec un
+message du type `service config at '/app/data' not found`, c'est un aléa
+ponctuel de la plateforme Railway (aucun volume n'est requis par cette
+app pour démarrer) — retentez simplement le déploiement.
+
 ### Mode démo (prévisualiser sans compte Google)
 
 Pour voir le tableau de bord et le poste d'accueil peuplés de rendez-vous
