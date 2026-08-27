@@ -6,14 +6,10 @@ const directors = require('../directors');
 const router = express.Router();
 
 // --- Connexion des profils a Google Calendar ---
-
-router.get('/google/:directorId', (req, res) => {
-  const { directorId } = req.params;
-  if (!googleAuth.isKnownDirector(directorId)) {
-    return res.status(404).send('Profil inconnu.');
-  }
-  res.redirect(googleAuth.getAuthUrl(directorId));
-});
+// IMPORTANT: /google/callback doit rester déclarée AVANT /google/:directorId.
+// Express matche les routes dans l'ordre d'enregistrement, et :directorId
+// est un joker qui capturerait sinon le mot "callback" comme s'il s'agissait
+// d'un identifiant de profil (d'où un "Profil inconnu" a chaque connexion).
 
 router.get('/google/callback', async (req, res) => {
   const { code, state, error } = req.query;
@@ -25,6 +21,14 @@ router.get('/google/callback', async (req, res) => {
     console.error(err);
     res.status(500).send(`Erreur pendant la connexion Google: ${err.message}`);
   }
+});
+
+router.get('/google/:directorId', (req, res) => {
+  const { directorId } = req.params;
+  if (!googleAuth.isKnownDirector(directorId)) {
+    return res.status(404).send('Profil inconnu.');
+  }
+  res.redirect(googleAuth.getAuthUrl(directorId));
 });
 
 // --- Connexion aux interfaces internes (code PIN gardien / code personnel) ---

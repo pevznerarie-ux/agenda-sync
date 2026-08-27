@@ -19,7 +19,7 @@ function newOAuthClient() {
 // compte Google. `state` porte l'identifiant du directeur pour qu'on sache,
 // au retour, a qui appartient le token.
 function getAuthUrl(directorId) {
-  if (!isKnownDirector(directorId)) throw new Error(`Directeur inconnu: ${directorId}`);
+  if (!isKnownDirector(directorId)) throw new Error(`Profil inconnu: ${directorId}`);
   const client = newOAuthClient();
   return client.generateAuthUrl({
     access_type: 'offline',
@@ -31,7 +31,7 @@ function getAuthUrl(directorId) {
 
 // Etape 2: echange du code contre des tokens, sauvegarde du refresh_token.
 async function handleCallback(code, directorId) {
-  if (!isKnownDirector(directorId)) throw new Error(`Directeur inconnu: ${directorId}`);
+  if (!isKnownDirector(directorId)) throw new Error(`Profil inconnu: ${directorId}`);
   const client = newOAuthClient();
   const { tokens } = await client.getToken(code);
   if (!tokens.refresh_token) {
